@@ -6,9 +6,8 @@ import scraping # Convert from jupyter notebook to Python for scraping code
 app = Flask(__name__)
 
 # Use flask_pymongo to set up mongo connection
-app.config["MONGO_URI"] = "mongodb://localhost:27017/mars_app" # app will connect to Mongo using a URI (uniform resource identifier)
-mongo = PyMongo(app) # the URI that will be used to connec the app to Mongo using port 27017 using a database called "mars_app" which is already created in Mongo
-
+app.config["MONGO_URI"] = "mongodb://localhost:27017/mars_app" # app will connect to Mongo using a URI (uniform resource identifier) using a database called mars_app
+mongo = PyMongo(app) # the URI that will be used to connect the app to Mongo using port 27017 
 # define route for HTML page
 @app.route("/") # route to tell Flask what to display when looking at index.html homepage
 def index(): # create a function called "index"
