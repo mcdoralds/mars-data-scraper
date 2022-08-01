@@ -12,8 +12,7 @@ def scrape_all():
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=True)   
 
-    # Set variables
-    news_title, news_paragraph = mars_news(browser)
+    news_title, news_paragraph = mars_news(browser) # set variables
 
     # Run all scraping functions and store results in dictionary
     data = {
@@ -21,7 +20,8 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemispheres":hemispheres(browser)
     }
 
     # Stop webdriver and return data
@@ -91,6 +91,45 @@ def mars_facts():
     df.set_index('Description', inplace=True)
 
     return df.to_html(classes="table table-striped") # convert dataframe into HTML format and add bootstrap
+
+
+# D2: Scrape High-Resolution Mars’ Hemisphere Images and Titles
+def hemispheres(browser):
+    # Hemispheres
+    # 1. Use browser to visit the URL 
+    url = 'https://marshemispheres.com/'
+
+    browser.visit(url)
+
+    # 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+
+    # 3. Write code to retrieve the image urls and titles for each hemisphere.
+    hemispheres = soup(browser.html, 'html.parser')
+    images = hemispheres.find_all('a', class_ = 'itemLink product-item') # define image to be extracted from site
+    images_set = list(set([image['href'] for image in images if image['href'].find('#')== -1])) # save images
+
+    print(images_set)
+
+    for image_url in images_set: # will loop through the tags
+        hemispheres = {} # create an empty dictionary
+        
+        base_image_urls = f'{url}{image_url}' # format for URLs that will be stored as strings
+        browser.visit(base_image_urls) # use splinter to visit image
+        img_temp = soup(browser.html, 'html.parser') # use bs4 to extract image
+        title = img_temp.find('h2').text # extract image title
+        
+        try:
+            full_image = browser.find_by_css('#wide-image > div > ul > li:nth-child(1) > a').first
+            hemisphere_image_urls.append({"image_url": full_image['href'], "title":title})
+            print(full_image['href'])
+            browser.back()
+            
+        except Exception as e :
+            print(e)
+
+
+    return hemisphere_image_urls
 
 
 if __name__ == "__main__":
