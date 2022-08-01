@@ -1,7 +1,7 @@
 # databootcamp-mars-scraper
 ## Project Overview
 ### Objectives
-The purpose of this project is to create a web app that will scrape data across various websites and store it in a database. The stored article headlines and images will then be compiled into a single, easy-to-read HTML page that serves as a dashboard for _All Things Mars_. 
+The purpose of this project is to create a web app that will scrape Mars data across various websites and store it in a database. The stored article headlines and images will then be compiled into a single, easy-to-read HTML page that serves as a dashboard for _All Things Mars_. 
 ### Resources
 #### Tools & Software
 - Python 3.9.12
